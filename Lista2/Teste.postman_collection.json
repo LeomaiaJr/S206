@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "9a1a8c45-a541-4da6-8a42-ff154b7f9943",
+		"name": "Teste",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23203080"
+	},
+	"item": [
+		{
+			"name": "Random Joke",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"pm.test(\"Response has required fields - type, setup, punchline, and id\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('type');",
+							"    pm.expect(responseData).to.have.property('setup');",
+							"    pm.expect(responseData).to.have.property('punchline');",
+							"    pm.expect(responseData).to.have.property('id');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Type, setup, and punchline are non-empty strings\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.type).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+							"  pm.expect(responseData.setup).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+							"  pm.expect(responseData.punchline).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"ID is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.id).to.be.a('number');",
+							"    pm.expect(responseData.id).to.be.at.least(0);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/random_joke",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"random_joke"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Random Ten",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response contains an array with 10 objects\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('array').that.has.lengthOf(10);",
+							"});",
+							"pm.test(\"Every element in the array has the required fields\", function () {",
+							"    pm.response.json().forEach(function(element) {",
+							"        pm.expect(element).to.have.property('type');",
+							"        pm.expect(element).to.have.property('setup');",
+							"        pm.expect(element).to.have.property('punchline');",
+							"        pm.expect(element).to.have.property('id');",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/random_ten",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"random_ten"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Random Ten Types",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check if the 10 returns are of the type programming, general, knock-knock\", function () {",
+							"    var responseBody = pm.response.json();",
+							"    var allowedTypes = [\"programming\", \"general\", \"knock-knock\"];",
+							"    ",
+							"    // Check if all the returned jokes belong to the allowed types",
+							"    _.each(responseBody, function(joke) {",
+							"        pm.expect(allowedTypes).to.include(joke.type);",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/random_ten",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"random_ten"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Joke ID NaN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response body contains expected message\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"The passed path is not a number\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/jokes/random/bla",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"jokes",
+						"random",
+						"bla"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Joke ID Overflow",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response body contains error message\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"The passed path exceeds the number of jokes (451)\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/jokes/random/9999999",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"jokes",
+						"random",
+						"9999999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Joke ID General Type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check type of the joke\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0].type).to.equal(\"general\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/jokes/random/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"jokes",
+						"random",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "lista2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test-api": "newman run Teste.postman_collection.json -e teste-env.postman_environment.json -r htmlextra --reporter-htmlextra-export ./reports/report.html --reporter-htmlextra-darkTheme"
+  },
+  "author": "",
+  "license": "ISC"
+}
